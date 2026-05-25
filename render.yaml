@@ -1,3 +1,7 @@
+databases:
+  - name: syfe-finance-db
+    plan: free
+
 services:
   - type: web
     name: syfe-finance-backend
@@ -10,12 +14,27 @@ services:
         value: 8080
       - key: SPRING_PROFILES_ACTIVE
         value: prod
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: syfe-finance-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: syfe-finance-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: syfe-finance-db
+          property: password
 
   - type: web
     name: syfe-finance-frontend
     env: static
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://syfe-finance-backend.onrender.com
     routes:
       - type: rewrite
         source: /*
