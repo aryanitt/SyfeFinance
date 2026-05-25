@@ -1,0 +1,274 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased transition-colors duration-200;
+    background-color: #f8fafc;
+    color: #1e293b;
+  }
+
+  body.dark {
+    background-color: #0f172a;
+    color: #f1f5f9;
+  }
+}
+
+@layer components {
+  /* Cards */
+  .finance-card,
+  .glass-card {
+    @apply bg-white rounded-2xl border shadow-sm;
+    border-color: #e2e8f0;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 4px 16px rgba(15, 23, 42, 0.04);
+  }
+
+  .dark .finance-card,
+  .dark .glass-card {
+    background-color: #1e293b;
+    border-color: #334155;
+    box-shadow: none;
+  }
+
+  /* Hero gradient (dashboard + auth logo) */
+  .finance-gradient-hero {
+    background: linear-gradient(135deg, #0f766e 0%, #0d9488 45%, #115e59 100%);
+  }
+
+  .finance-glass-inner {
+    @apply bg-white/15 backdrop-blur-md border border-white/20 rounded-2xl;
+  }
+
+  /* Typography */
+  .page-title {
+    @apply text-2xl md:text-3xl font-bold text-slate-800 dark:text-slate-100 tracking-tight;
+  }
+
+  .page-subtitle {
+    @apply text-sm text-slate-600 dark:text-slate-400 mt-1;
+  }
+
+  .card-title {
+    @apply text-lg font-bold text-slate-800 dark:text-slate-100;
+  }
+
+  .stat-label {
+    @apply text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400;
+  }
+
+  .stat-value {
+    @apply text-3xl font-extrabold text-slate-800 dark:text-slate-100;
+  }
+
+  .text-muted {
+    @apply text-slate-600 dark:text-slate-400;
+  }
+
+  /* Buttons */
+  .btn-finance-primary {
+    @apply inline-flex items-center justify-center px-4 py-2.5 text-white rounded-xl text-sm font-semibold shadow-md transition-all active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none;
+    background-color: #0d9488;
+  }
+
+  .btn-finance-primary:hover:not(:disabled) {
+    background-color: #0f766e;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-4 py-2.5 rounded-xl text-sm font-semibold border shadow-sm transition-all disabled:opacity-50;
+    @apply bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200;
+    @apply hover:bg-slate-50 dark:hover:bg-slate-700;
+  }
+
+  .btn-finance-ghost {
+    @apply inline-flex items-center justify-center px-4 py-2.5 rounded-xl text-sm font-semibold transition-all text-teal-700 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-950/30;
+  }
+
+  /* Form fields */
+  .field-label {
+    @apply text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400;
+  }
+
+  .input-field,
+  .select-field {
+    @apply w-full px-4 py-2.5 rounded-xl text-sm transition-all;
+    @apply bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-600;
+    @apply text-slate-800 dark:text-slate-100;
+    @apply focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500;
+  }
+
+  .input-field-error,
+  .select-field.input-field-error {
+    @apply border-rose-500 focus:border-rose-500 focus:ring-rose-500/20;
+  }
+
+  .field-error {
+    @apply text-xs text-rose-600 dark:text-rose-400 font-medium;
+  }
+
+  /* Tabs */
+  .tab-group {
+    @apply flex p-1 rounded-xl w-fit bg-slate-200/70 dark:bg-slate-800;
+  }
+
+  .tab-active {
+    @apply px-4 py-2 rounded-lg text-sm font-semibold transition-all;
+    @apply bg-white dark:bg-slate-700 text-teal-700 dark:text-teal-300 shadow-sm;
+  }
+
+  .tab-inactive {
+    @apply px-4 py-2 rounded-lg text-sm font-semibold transition-all;
+    @apply text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200;
+  }
+
+  /* Alerts */
+  .alert-error {
+    @apply p-4 rounded-2xl flex items-start gap-3 text-sm;
+    @apply bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800;
+    @apply text-rose-800 dark:text-rose-300;
+  }
+
+  .alert-success {
+    @apply p-4 rounded-2xl flex items-start gap-3 text-sm;
+    @apply bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800;
+    @apply text-emerald-800 dark:text-emerald-300;
+  }
+
+  /* Modal */
+  .modal-overlay {
+    @apply fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6;
+    @apply bg-slate-900/40 backdrop-blur-sm;
+  }
+
+  .modal-panel {
+    @apply w-full max-w-md finance-card overflow-hidden;
+    box-shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
+  }
+
+  .modal-header {
+    @apply h-14 px-6 border-b border-slate-200 dark:border-slate-600 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50;
+  }
+
+  .modal-title {
+    @apply font-bold text-slate-800 dark:text-slate-100;
+  }
+
+  .modal-close {
+    @apply p-1.5 rounded-lg text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors;
+  }
+
+  .modal-body {
+    @apply p-6 space-y-4;
+  }
+
+  .modal-footer {
+    @apply px-6 py-4 border-t border-slate-200 dark:border-slate-600 flex justify-end gap-3 bg-slate-50/80 dark:bg-slate-800/30;
+  }
+
+  /* Table */
+  .table-head {
+    @apply border-b border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-400 text-xs font-semibold;
+  }
+
+  .table-row {
+    @apply text-slate-700 dark:text-slate-300 border-b border-slate-100 dark:border-slate-700/50;
+  }
+
+  /* Spinner */
+  .spinner {
+    @apply rounded-full border-4 border-teal-100 dark:border-teal-900 border-t-teal-600 dark:border-t-teal-400 animate-spin w-10 h-10;
+  }
+
+  /* Badges */
+  .badge-income {
+    @apply px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300;
+  }
+
+  .badge-expense {
+    @apply px-2 py-0.5 rounded-full text-xs font-medium bg-rose-50 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300;
+  }
+
+  .badge-teal {
+    @apply px-2.5 py-0.5 rounded-full text-xs font-semibold bg-teal-50 text-teal-700 dark:bg-teal-950/40 dark:text-teal-300;
+  }
+
+  /* Auth pages (login / register) */
+  .auth-page {
+    @apply min-h-screen flex items-center justify-center p-6 relative overflow-hidden;
+    background-color: #f8fafc;
+  }
+
+  .dark .auth-page {
+    background-color: #0f172a;
+  }
+
+  .auth-blob-teal {
+    @apply absolute w-80 h-80 bg-teal-400/30 rounded-full blur-[100px] pointer-events-none;
+  }
+
+  .auth-blob-slate {
+    @apply absolute w-96 h-96 bg-slate-300/40 rounded-full blur-[120px] pointer-events-none;
+  }
+
+  /* Premium Dark Mode support overrides */
+  .summary-pill {
+    @apply p-4 rounded-xl border border-slate-200 bg-white transition-colors duration-200;
+  }
+  .dark .summary-pill {
+    background-color: #1e293b;
+    border-color: #334155;
+  }
+
+  .insights-card {
+    @apply mt-5 p-5 rounded-2xl border border-slate-200 bg-slate-50/80 transition-colors duration-200;
+  }
+  .dark .insights-card {
+    background-color: rgba(30, 41, 59, 0.4);
+    border-color: #334155;
+  }
+
+  .action-button-expense {
+    @apply w-full flex items-center gap-4 p-4 rounded-2xl bg-rose-50 border border-rose-100 hover:bg-rose-100/80 transition-all duration-200 text-left;
+  }
+  .dark .action-button-expense {
+    background-color: rgba(244, 63, 94, 0.08);
+    border-color: rgba(244, 63, 94, 0.2);
+  }
+  .dark .action-button-expense:hover {
+    background-color: rgba(244, 63, 94, 0.14);
+  }
+
+  .action-button-income {
+    @apply w-full flex items-center gap-4 p-4 rounded-2xl bg-emerald-50 border border-emerald-100 hover:bg-emerald-100/80 transition-all duration-200 text-left;
+  }
+  .dark .action-button-income {
+    background-color: rgba(16, 185, 129, 0.08);
+    border-color: rgba(16, 185, 129, 0.2);
+  }
+  .dark .action-button-income:hover {
+    background-color: rgba(16, 185, 129, 0.14);
+  }
+
+  .total-flow-card {
+    @apply flex flex-col items-center justify-center py-6 md:py-8 border border-slate-200 rounded-2xl bg-slate-50/50 transition-colors duration-200;
+  }
+  .dark .total-flow-card {
+    background-color: #0f172a;
+    border-color: #334155;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 dark:bg-slate-600 rounded-full;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400 dark:bg-slate-500;
+}
