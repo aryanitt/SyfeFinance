@@ -35,7 +35,6 @@ import {
   Label,
   FieldError,
   inputClass,
-  selectClass,
   BtnPrimary,
   BtnSecondary,
   AlertBanner,
