@@ -28,5 +28,9 @@ public class TransactionRequestDto {
     private String categoryName;
 
     private String description;
+
+    public void setCategory(String category) {
+        this.categoryName = category;
+    }
 }
 
