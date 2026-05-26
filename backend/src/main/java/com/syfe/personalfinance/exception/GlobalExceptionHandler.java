@@ -69,6 +69,16 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler(org.springframework.http.converter.HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleHttpMessageNotReadable(org.springframework.http.converter.HttpMessageNotReadableException ex, HttpServletRequest request) {
+        String msg = ex.getMessage();
+        if (ex.getCause() != null) {
+            msg = ex.getCause().getMessage();
+        }
+        ErrorResponse error = new ErrorResponse(getTimestamp(), HttpStatus.BAD_REQUEST.value(), "Invalid request format: " + msg, request.getRequestURI());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericException(Exception ex, HttpServletRequest request) {
         ex.printStackTrace();

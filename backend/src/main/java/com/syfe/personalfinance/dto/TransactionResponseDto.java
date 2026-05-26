@@ -1,5 +1,6 @@
 package com.syfe.personalfinance.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.syfe.personalfinance.entity.CategoryType;
 import lombok.*;
 import java.math.BigDecimal;
@@ -17,4 +18,15 @@ public class TransactionResponseDto {
     private String description;
     private String categoryName;
     private CategoryType categoryType;
+
+    @JsonProperty("category")
+    public String getCategory() {
+        return categoryName;
+    }
+
+    @JsonProperty("type")
+    public CategoryType getType() {
+        return categoryType;
+    }
 }
+

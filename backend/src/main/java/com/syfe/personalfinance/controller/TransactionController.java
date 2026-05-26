@@ -51,7 +51,7 @@ public class TransactionController {
     @PutMapping("/{id}")
     public ResponseEntity<TransactionResponseDto> updateTransaction(
             @PathVariable("id") Long id,
-            @Valid @RequestBody TransactionRequestDto requestDto,
+            @RequestBody TransactionRequestDto requestDto,
             Authentication authentication) {
         User user = userService.getUserByUsername(authentication.getName());
         TransactionResponseDto updated = transactionService.updateTransaction(id, requestDto, user);

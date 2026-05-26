@@ -1,5 +1,6 @@
 package com.syfe.personalfinance.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -23,7 +24,9 @@ public class TransactionRequestDto {
     private LocalDate date;
 
     @NotBlank(message = "Category name is required")
+    @JsonAlias({"category", "categoryName"})
     private String categoryName;
 
     private String description;
 }
+

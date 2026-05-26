@@ -3,6 +3,7 @@ package com.syfe.personalfinance.controller;
 import com.syfe.personalfinance.dto.MonthlyReportDto;
 import com.syfe.personalfinance.dto.YearlyReportDto;
 import com.syfe.personalfinance.entity.User;
+import com.syfe.personalfinance.exception.BadRequestException;
 import com.syfe.personalfinance.service.ReportService;
 import com.syfe.personalfinance.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -26,10 +27,14 @@ public class ReportController {
             @PathVariable("year") int year,
             @PathVariable("month") int month,
             Authentication authentication) {
+        if (month < 1 || month > 12) {
+            throw new BadRequestException("Invalid value for MonthOfYear (valid values 1 - 12): " + month);
+        }
         User user = userService.getUserByUsername(authentication.getName());
         MonthlyReportDto report = reportService.generateMonthlyReport(year, month, user);
         return ResponseEntity.ok(report);
     }
+
 
     @GetMapping("/yearly/{year}")
     public ResponseEntity<YearlyReportDto> getYearlyReport(

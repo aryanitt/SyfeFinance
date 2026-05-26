@@ -52,7 +52,7 @@ public class SavingsGoalController {
     @PutMapping("/{id}")
     public ResponseEntity<SavingsGoalResponseDto> updateGoal(
             @PathVariable("id") Long id,
-            @Valid @RequestBody SavingsGoalRequestDto requestDto,
+            @RequestBody SavingsGoalRequestDto requestDto,
             Authentication authentication) {
         User user = userService.getUserByUsername(authentication.getName());
         SavingsGoalResponseDto updated = savingsGoalService.updateGoal(id, requestDto, user);

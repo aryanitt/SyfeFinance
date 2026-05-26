@@ -85,15 +85,23 @@ public class TransactionServiceImpl implements TransactionService {
             throw new ForbiddenException("You do not have permission to modify this transaction");
         }
 
-        if (!transaction.getDate().equals(requestDto.getDate())) {
-            throw new BadRequestException("Transaction date field cannot be modified");
+        // The date field should be completely ignored (original date remains unchanged)
+
+        if (requestDto.getAmount() != null) {
+            if (requestDto.getAmount().compareTo(java.math.BigDecimal.ZERO) <= 0) {
+                throw new BadRequestException("Amount must be a positive decimal value");
+            }
+            transaction.setAmount(requestDto.getAmount());
         }
 
-        Category category = categoryService.getCategoryByNameAndUser(requestDto.getCategoryName(), user);
+        if (requestDto.getDescription() != null) {
+            transaction.setDescription(requestDto.getDescription());
+        }
 
-        transaction.setAmount(requestDto.getAmount());
-        transaction.setDescription(requestDto.getDescription());
-        transaction.setCategory(category);
+        if (requestDto.getCategoryName() != null && !requestDto.getCategoryName().trim().isEmpty()) {
+            Category category = categoryService.getCategoryByNameAndUser(requestDto.getCategoryName(), user);
+            transaction.setCategory(category);
+        }
 
         Transaction updated = transactionRepository.save(transaction);
         return convertToDto(updated);

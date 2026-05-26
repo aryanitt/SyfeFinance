@@ -24,4 +24,7 @@ public class SavingsGoalRequestDto {
     @NotNull(message = "Target date is required")
     @Future(message = "Target date must be a future date")
     private LocalDate targetDate;
+
+    private LocalDate startDate;
 }
+

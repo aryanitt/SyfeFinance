@@ -37,11 +37,20 @@ public class SavingsGoalServiceImpl implements SavingsGoalService {
             throw new BadRequestException("Target date must be in the future");
         }
 
+        LocalDate startDate = requestDto.getStartDate();
+        if (startDate == null) {
+            startDate = LocalDate.now();
+        }
+
+        if (startDate.isAfter(requestDto.getTargetDate())) {
+            throw new BadRequestException("Start date cannot be after target date");
+        }
+
         SavingsGoal goal = SavingsGoal.builder()
                 .goalName(requestDto.getGoalName())
                 .targetAmount(requestDto.getTargetAmount())
                 .targetDate(requestDto.getTargetDate())
-                .startDate(LocalDate.now())
+                .startDate(startDate)
                 .user(user)
                 .build();
 
@@ -79,13 +88,27 @@ public class SavingsGoalServiceImpl implements SavingsGoalService {
             throw new ForbiddenException("You do not have permission to modify this savings goal");
         }
 
-        if (requestDto.getTargetDate().isBefore(LocalDate.now()) || requestDto.getTargetDate().isEqual(LocalDate.now())) {
-            throw new BadRequestException("Target date must be in the future");
+        if (requestDto.getGoalName() != null && !requestDto.getGoalName().trim().isEmpty()) {
+            goal.setGoalName(requestDto.getGoalName());
         }
 
-        goal.setGoalName(requestDto.getGoalName());
-        goal.setTargetAmount(requestDto.getTargetAmount());
-        goal.setTargetDate(requestDto.getTargetDate());
+        if (requestDto.getTargetAmount() != null) {
+            if (requestDto.getTargetAmount().compareTo(BigDecimal.ZERO) <= 0) {
+                throw new BadRequestException("Target amount must be a positive decimal value");
+            }
+            goal.setTargetAmount(requestDto.getTargetAmount());
+        }
+
+        if (requestDto.getTargetDate() != null) {
+            if (requestDto.getTargetDate().isBefore(LocalDate.now()) || requestDto.getTargetDate().isEqual(LocalDate.now())) {
+                throw new BadRequestException("Target date must be a future date");
+            }
+            LocalDate currentStartDate = goal.getStartDate() != null ? goal.getStartDate() : LocalDate.now();
+            if (currentStartDate.isAfter(requestDto.getTargetDate())) {
+                throw new BadRequestException("Start date cannot be after target date");
+            }
+            goal.setTargetDate(requestDto.getTargetDate());
+        }
 
         SavingsGoal updated = savingsGoalRepository.save(goal);
         return convertToDto(updated, user);
