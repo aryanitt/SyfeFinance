@@ -26,20 +26,47 @@ public class DatabaseConfig {
             url = System.getenv("DATABASE_URL");
         }
 
+        String username = null;
+        String password = null;
+
         if (url != null) {
             url = url.trim();
-            // Programmatically prepend jdbc: prefix to any postgresql/postgres scheme
-            if (url.startsWith("postgresql://")) {
-                url = "jdbc:" + url;
-            } else if (url.startsWith("postgres://")) {
-                url = "jdbc:postgresql://" + url.substring("postgres://".length());
+            String cleanUrl = url;
+            if (cleanUrl.startsWith("jdbc:")) {
+                cleanUrl = cleanUrl.substring("jdbc:".length());
+            }
+            
+            if (cleanUrl.startsWith("postgres://") || cleanUrl.startsWith("postgresql://")) {
+                String schema = cleanUrl.startsWith("postgres://") ? "postgres://" : "postgresql://";
+                String remaining = cleanUrl.substring(schema.length());
+                
+                if (remaining.contains("@")) {
+                    String[] parts = remaining.split("@", 2);
+                    String userPass = parts[0];
+                    String hostDb = parts[1];
+                    
+                    if (userPass.contains(":")) {
+                        String[] up = userPass.split(":", 2);
+                        username = up[0];
+                        password = up[1];
+                    } else {
+                        username = userPass;
+                        password = "";
+                    }
+                    url = "jdbc:postgresql://" + hostDb;
+                } else {
+                    url = "jdbc:postgresql://" + remaining;
+                }
             }
         } else {
             // Fallback default H2
             url = "jdbc:h2:mem:syfedb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE";
         }
 
-        String username = properties.determineUsername();
+        // If username not set from URL, fallback to properties and environment
+        if (username == null || username.trim().isEmpty()) {
+            username = properties.determineUsername();
+        }
         if (username == null || username.trim().isEmpty()) {
             username = System.getenv("SPRING_DATASOURCE_USERNAME");
         }
@@ -47,7 +74,10 @@ public class DatabaseConfig {
             username = "sa";
         }
 
-        String password = properties.determinePassword();
+        // If password not set from URL, fallback to properties and environment
+        if (password == null || password.trim().isEmpty()) {
+            password = properties.determinePassword();
+        }
         if (password == null || password.trim().isEmpty()) {
             password = System.getenv("SPRING_DATASOURCE_PASSWORD");
         }
